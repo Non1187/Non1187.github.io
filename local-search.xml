@@ -4,12 +4,18 @@
   
   
   <entry>
-    <title>cheer12138</title>
-    <link href="/2022/03/03/cheer/"/>
-    <url>/2022/03/03/cheer/</url>
+    <title>软件安全记录：shellcode的调试</title>
+    <link href="/2022/03/10/%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E8%AE%B0%E5%BD%95%EF%BC%9Ashellcode%E7%9A%84%E8%B0%83%E8%AF%95/"/>
+    <url>/2022/03/10/%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E8%AE%B0%E5%BD%95%EF%BC%9Ashellcode%E7%9A%84%E8%B0%83%E8%AF%95/</url>
     
-    <content type="html"><![CDATA[<p>Welcome to cheer!</p>]]></content>
+    <content type="html"><![CDATA[<p>软件漏洞课上要做实验，在64位Seed Ubuntu20.04中搞了个32位的程序，加上了32位shellcode尝试getshell，但是结果不符合预期：</p><p>在gdb中运行：</p><ul><li>不使用set follow-fork-mode parent，报错，直接退出gdb</li><li>使用set follow-fork-mode parent，可以正常getshell</li></ul><p>直接运行，则报segmentation fault</p>]]></content>
     
+    
+    <categories>
+      
+      <category>课程随笔</category>
+      
+    </categories>
     
     
   </entry>
@@ -17,11 +23,30 @@
   
   
   <entry>
-    <title>Hello World</title>
-    <link href="/2022/02/27/hello-world/"/>
-    <url>/2022/02/27/hello-world/</url>
+    <title>编译原理记录：LLVM使用及优化</title>
+    <link href="/2022/03/03/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E8%AE%B0%E5%BD%95%EF%BC%9ALLVM%E4%BD%BF%E7%94%A8%E5%8F%8A%E4%BC%98%E5%8C%96/"/>
+    <url>/2022/03/03/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E8%AE%B0%E5%BD%95%EF%BC%9ALLVM%E4%BD%BF%E7%94%A8%E5%8F%8A%E4%BC%98%E5%8C%96/</url>
     
-    <content type="html"><![CDATA[<p>Hi Cheer, Hello Cheer, Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><pre><code class="hljs bash">$ hexo new <span class="hljs-string">&quot;My New Post&quot;</span><br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo server<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo generate<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo deploy<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
+    <content type="html"><![CDATA[<p>本学期的编译原理课程有一个关于<code>LLVM/Clang</code>环境的搭建和优化的作业，要求在原始编译器的基础上扩展数组类型修饰符，增加越界访问检查功能。这个内容正好和系统安全有比较大的关系(至少大创老师是这么说的)，因此进行一些记录。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>课程随笔</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>UCASCheer</title>
+    <link href="/2022/03/03/UCASCheer/"/>
+    <url>/2022/03/03/UCASCheer/</url>
+    
+    <content type="html"><![CDATA[<p>Welcome to UCASCheer!</p><p>刚学会搭建网站，初来乍到请谅解。 后期本人会努力进行一些优化的</p><p>譬如首页的打印机招牌，正在思考修改或去掉的方案（</p><p>感谢浏览本站！</p>]]></content>
     
     
     

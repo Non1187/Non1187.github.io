@@ -4,11 +4,24 @@
   
   
   <entry>
+    <title></title>
+    <link href="/2022/03/15/3%E6%9C%8815%20%E6%84%9F%E6%83%B3/"/>
+    <url>/2022/03/15/3%E6%9C%8815%20%E6%84%9F%E6%83%B3/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>软件安全记录：shellcode的调试</title>
     <link href="/2022/03/10/%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E8%AE%B0%E5%BD%95%EF%BC%9Ashellcode%E7%9A%84%E8%B0%83%E8%AF%95/"/>
     <url>/2022/03/10/%E8%BD%AF%E4%BB%B6%E5%AE%89%E5%85%A8%E8%AE%B0%E5%BD%95%EF%BC%9Ashellcode%E7%9A%84%E8%B0%83%E8%AF%95/</url>
     
-    <content type="html"><![CDATA[<p>软件漏洞课上要做实验，在64位Seed Ubuntu20.04中搞了个32位的程序，加上了32位shellcode尝试getshell，但是结果不符合预期：</p><p>在gdb中运行：</p><ul><li>不使用set follow-fork-mode parent，报错，直接退出gdb</li><li>使用set follow-fork-mode parent，可以正常getshell</li></ul><p>直接运行，则报segmentation fault</p>]]></content>
+    <content type="html"><![CDATA[<p>软件漏洞课上要做实验，在64位Seed Ubuntu20.04中搞了个32位的程序，加上了32位shellcode尝试getshell，但是结果不符合预期：</p><p>在gdb中运行：</p><ul><li>不使用set follow-fork-mode parent，报错，直接退出gdb</li><li>使用set follow-fork-mode parent，可以正常getshell</li></ul><p>直接运行，则报segmentation fault</p><p>本来其实也不是很想接着搞了，因为上课的时候，陈恺老师遇到这种问题一般就随口提一下，让我们自己尝试探究探究，不会有更进一步的反馈。这样的想法不是很好</p>]]></content>
     
     
     <categories>
@@ -23,11 +36,11 @@
   
   
   <entry>
-    <title>编译原理记录：LLVM使用及优化</title>
-    <link href="/2022/03/03/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E8%AE%B0%E5%BD%95%EF%BC%9ALLVM%E4%BD%BF%E7%94%A8%E5%8F%8A%E4%BC%98%E5%8C%96/"/>
-    <url>/2022/03/03/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E8%AE%B0%E5%BD%95%EF%BC%9ALLVM%E4%BD%BF%E7%94%A8%E5%8F%8A%E4%BC%98%E5%8C%96/</url>
+    <title>编译原理记录：LLVM编译器使用及编译方案优化</title>
+    <link href="/2022/03/03/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E8%AE%B0%E5%BD%95%EF%BC%9ALLVM%E7%BC%96%E8%AF%91%E5%99%A8%E4%BD%BF%E7%94%A8%E5%8F%8A%E7%BC%96%E8%AF%91%E6%96%B9%E6%A1%88%E4%BC%98%E5%8C%96/"/>
+    <url>/2022/03/03/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E8%AE%B0%E5%BD%95%EF%BC%9ALLVM%E7%BC%96%E8%AF%91%E5%99%A8%E4%BD%BF%E7%94%A8%E5%8F%8A%E7%BC%96%E8%AF%91%E6%96%B9%E6%A1%88%E4%BC%98%E5%8C%96/</url>
     
-    <content type="html"><![CDATA[<p>本学期的编译原理课程有一个关于<code>LLVM/Clang</code>环境的搭建和优化的作业，要求在原始编译器的基础上扩展数组类型修饰符，增加越界访问检查功能。这个内容正好和系统安全有比较大的关系(至少大创老师是这么说的)，因此进行一些记录。</p>]]></content>
+    <content type="html"><![CDATA[<p>本学期的编译原理课程有一个关于<code>LLVM/Clang</code>环境的搭建和优化的作业，要求在原始编译器的基础上扩展数组类型修饰符，增加越界访问检查功能。这个内容正好对于系统安全来说比较重要(至少大创老师是这么说的)，因此进行一些记录。</p><p>在gitlab上建了一个project，地址也贴在这里：<a href="https://gitlab.com/Non1187/compileprinciplelab-2022-spring">Non &#x2F; CompilePrincipleLab-2022-spring · GitLab</a></p><h4 id="3-x2F-15-实验课-词法分析"><a href="#3-x2F-15-实验课-词法分析" class="headerlink" title="3&#x2F;15 实验课  词法分析"></a>3&#x2F;15 实验课  词法分析</h4><h4 id="3-x2F-20-Lab1-2-分析"><a href="#3-x2F-20-Lab1-2-分析" class="headerlink" title="3&#x2F;20 Lab1-2 分析"></a>3&#x2F;20 Lab1-2 分析</h4><p>由于组内ly同学的出色表现，Lab1-1基本已经宣告完成了(即基本完成了<code>*.g4</code>的编写)，我需要完成的实验部分就是Lab1-2了。思路是，首先尝试熟悉C++语法并完成初步的代码分析，然后进行代码的编写。</p>]]></content>
     
     
     <categories>

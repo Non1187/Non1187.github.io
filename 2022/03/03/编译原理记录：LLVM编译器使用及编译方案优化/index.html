@@ -24,7 +24,7 @@
 <meta property="og:description" content="本学期的编译原理课程有一个关于LLVM&#x2F;Clang环境的搭建和优化的作业，要求在原始编译器的基础上扩展数组类型修饰符，增加越界访问检查功能。这个内容正好对于系统安全来说比较重要(至少大创老师是这么说的)，因此进行一些记录。 在gitlab上建了一个project，地址也贴在这里：Non &#x2F; CompilePrincipleLab-2022-spring · GitLab Lab1-2 分">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-03-03T15:14:50.574Z">
-<meta property="article:modified_time" content="2022-03-20T11:02:47.006Z">
+<meta property="article:modified_time" content="2022-03-20T13:56:16.988Z">
 <meta property="article:author" content="Cheer">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -196,7 +196,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.4k 字
+      1.7k 字
     </span>
   
 
@@ -205,7 +205,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      13 分钟
+      15 分钟
     </span>
   
 
@@ -248,9 +248,12 @@
 <hr>
 <p>还需要分析<code>Context</code>对象在<code>visitCompUnit</code>方法中的作用，考虑<code>visitCompUnit</code>方法的内容。</p>
 <p><code>main.cpp</code>中，调用<code>parser.compUnit()</code>方法，该方法返回一个<code>CompUnitContext *_localctx</code>环境对象。以该对象作为参数，调用<code>AstBuilder ast_builder</code>类初始化方法即<code>visit()</code>方法，<code>visit()</code>方法中调用该节点的<code>tree-&gt;accept(this)</code>方法。</p>
-<p><code>accept</code>方法，功能为调用该节点的<code>visit(*this)</code>方法。<code>visit()</code>方法中又对每个子节点调用本节点的<code>accept()</code>方法</p>
-<p>有没有<code>AstNode.cpp </code>?</p>
-
+<p><code>accept</code>方法，功能为调用该节点的<code>visit(*this)</code>方法。<code>visit()</code>方法中又对每个子节点调用本节点的<code>accept()</code>方法。</p>
+<p><code>accept()</code>方法定义在文件<code>SafeCParser.cpp</code>中。其中可以调用<code>visitor -&gt; visitChildren(this)</code>对子节点进行访问。</p>
+<hr>
+<p>在上面对<code>Context</code>对象的分析的基础上，考虑<code>AstBuilder.cpp</code>中，对语法分析树的操作是如何嵌入的。</p>
+<p><code>AstBuilder.cpp</code>中，对语法分析树的操作 实现在<code>visitCompUnit()</code> <code>visitDecl()</code> <code>visitFuncDef()</code>等方法中，这些visit方法会在accept函数中使用，从而对节点进行操作。</p>
+<h5 id="AstBuilder类方法的编写"><a href="#AstBuilder类方法的编写" class="headerlink" title="AstBuilder类方法的编写"></a>AstBuilder类方法的编写</h5>
             </div>
             <hr>
             <div>

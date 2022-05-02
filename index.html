@@ -193,13 +193,53 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/04/14/Pwn%E7%AC%94%E8%AE%B0%20%E9%A2%98%E7%9B%AE%E7%9A%84docker%E9%83%A8%E7%BD%B2/" target="_self">
-          Pwn笔记 题目的docker部署
+        <a href="/2022/05/02/%E9%A1%B6%E5%B0%96%E9%BB%91%E5%AE%A2%E7%9A%84%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/" target="_self">
+          顶尖黑客的软件安全研究
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2022/04/14/Pwn%E7%AC%94%E8%AE%B0%20%E9%A2%98%E7%9B%AE%E7%9A%84docker%E9%83%A8%E7%BD%B2/" target="_self">
+        <a href="/2022/05/02/%E9%A1%B6%E5%B0%96%E9%BB%91%E5%AE%A2%E7%9A%84%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/" target="_self">
+          
+          对于腾讯的安全实验室进行了搜索，发现其中有很多CVE，这些主要属于art的范畴，比较偏工业和应用。要称为science应该是提出一类方法，例如静态与动态代码分析的优化、fuzz的优化等等。 试试多找找吧
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-05-02 22:05" pubdate>
+              2022-05-02
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E8%AF%BE%E7%A8%8B%E9%9A%8F%E7%AC%94/">课程随笔</a>
+            
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/04/14/Pwn%E9%A2%98%E7%9B%AE%E7%9A%84docker%E9%83%A8%E7%BD%B2/" target="_self">
+          Pwn题目的docker部署
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2022/04/14/Pwn%E9%A2%98%E7%9B%AE%E7%9A%84docker%E9%83%A8%E7%BD%B2/" target="_self">
           
           根据助教老师的提示，使用ctf_xinetd框架 使用README.md中的方法，无法复现：原可执行程序的功能是打印”Hello ctf_xinetd”之后开shell，但是开容器后，用nc连接时没有Hello信息，可以正常开shell。 执行exit无法直接退出，反而打印了Hello信息。然后多次键入回车后会退出。推测多次键入回车是退出时的确认。 因此将打印信息删除了，直接进行注入和执行。
         </a>
@@ -233,13 +273,13 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/04/13/Pwn%E7%AC%94%E8%AE%B0%20shellcode%E7%9A%84%E6%9E%84%E5%BB%BA/" target="_self">
-          Pwn笔记 shellcode的构建
+        <a href="/2022/04/13/Pwn%E4%B8%ADshellcode%E7%9A%84%E6%9E%84%E5%BB%BA/" target="_self">
+          Pwn中shellcode的构建
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2022/04/13/Pwn%E7%AC%94%E8%AE%B0%20shellcode%E7%9A%84%E6%9E%84%E5%BB%BA/" target="_self">
+        <a href="/2022/04/13/Pwn%E4%B8%ADshellcode%E7%9A%84%E6%9E%84%E5%BB%BA/" target="_self">
           
           32位shellcode: 12345678xor    ecx,ecx;mul    ecx;push   ecx;push   0x68732f2f;push   0x6e69622f;mov    ebx,esp;mov    al,0xb;int    0x80;  32位机器的系统调用，调用号在EAX，前面的参数依次在EBX, ECX, EDX 其中，mul ecx;指令的作用为EDX:
         </a>

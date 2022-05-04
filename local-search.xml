@@ -4,11 +4,43 @@
   
   
   <entry>
+    <title>pwnable.tw题目记录</title>
+    <link href="/2022/05/04/pwnable.tw/"/>
+    <url>/2022/05/04/pwnable.tw/</url>
+    
+    <content type="html"><![CDATA[<p>记录部分pwnable.tw上的题目。</p><h2 id="silver-bullet"><a href="#silver-bullet" class="headerlink" title="silver_bullet"></a>silver_bullet</h2><h4 id="0-文件分析"><a href="#0-文件分析" class="headerlink" title="0 文件分析"></a>0 文件分析</h4><p>仍然给了两个文件</p><p>libc_32.so.6是之前的那个版本的glibc 2.23，试试直接从glibc_allinone里面找到了那个版本的libc库文件</p><p>​    i386的glibc 2.23库文件有两种，之前下的是<code>2.23-0ubuntu11.3_i386</code>，又下了一个<code>2.23-0ubuntu3_i386</code> 发现版本不一样。</p><p>​    但是用那个库的解释器是可以运行题目给的libc文件的。</p><p>查看ELF文件，是32位文件，动态链接，没有strip调试信息</p><p>checksec，没有开canary和PIE</p><p>​    哪里有一个开了PIE的题目(？)</p><h4 id="1-流程分析"><a href="#1-流程分析" class="headerlink" title="1 流程分析"></a>1 流程分析</h4><p>分析程序流程，是一个用银子弹打狼人的程序。具体的菜单中的选项比较清楚</p><p>power_up函数的14行存在一个漏洞，strncat可能将main函数中的dest[48]覆盖为0，导致15行v3的计算结果仅为strlen(s)。</p><p>利用该效果打倒狼人：</p><ul><li>创建内容为“A”*47的bullet</li><li>进行power_up，新增长度为1的内容，将长度字段覆盖为0(仅覆盖了尾部一个字节)，然后v3仅为1</li><li>进行power_up，可以新增长度为47的内容，因此将长度字段覆盖为全F</li><li>进行beat，攻击两次可以打倒狼人。</li></ul><h4 id="2-漏洞及攻击方法"><a href="#2-漏洞及攻击方法" class="headerlink" title="2 漏洞及攻击方法"></a>2 漏洞及攻击方法</h4><p>在<strong>1</strong>的第3步中strncat将在s[47]再向后加两个字节处开始覆盖。可以覆盖的返回地址数量为40字节，可以放置10个Gadget</p><p>覆盖完毕后还需要执行完毕beat，然后才可以返回</p><ul><li>创建内容为“A”*47的bullet</li><li>进行power_up，新增长度为1的内容，将长度字段覆盖为0，然后v3仅为1</li><li>进行power_up，可以新增长度为47的内容，因此将长度字段覆盖为除结尾的0x01外全F，同时将返回地址覆盖为Gadget，然后v3计算结果仍为负值</li><li>进行beat，攻击两次可以打倒狼人。</li></ul><h4 id="3-调试"><a href="#3-调试" class="headerlink" title="3 调试"></a>3 调试</h4><p>处理recv的编写，编写exp内menu中操作的函数时，函数的封装仅考虑程序中对应的部分，不添加多余的recv</p><p>以及解决”其他”中的问题</p><p>最后exp.py可以运行，获得flag</p><p><a href="https://imgtu.com/i/OZPARf"><img src="https://s1.ax1x.com/2022/05/04/OZPARf.png" alt="OZPARf.png" style="zoom:67%;" /></a></p><h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><p>strncat strcat等函数会在修改后dest字符串的结尾增加空字符null。</p><p>strncat strcat等函数会在0x00处截断</p><p>设置libc的基址时，用到的属性为libc.address</p><p>这道题目，如果用64位好像就做不了了</p><p>​    改成PIE好像也做不了</p><p>​    能做吗… ?</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Pwn中的堆利用</title>
+    <link href="/2022/05/03/Pwn%E4%B8%AD%E7%9A%84%E5%A0%86%E5%88%A9%E7%94%A8/"/>
+    <url>/2022/05/03/Pwn%E4%B8%AD%E7%9A%84%E5%A0%86%E5%88%A9%E7%94%A8/</url>
+    
+    <content type="html"><![CDATA[<p>记录一下pwn题目中的堆利用方法，待填坑。</p><p>根据ctf-wiki的描述进行一些总结。</p><h5 id="堆溢出"><a href="#堆溢出" class="headerlink" title="堆溢出"></a>堆溢出</h5><h5 id="Off-By-One"><a href="#Off-By-One" class="headerlink" title="Off-By-One"></a>Off-By-One</h5><h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><p>[1]  <a href="https://ctf-wiki.org/pwn/linux/user-mode/heap/ptmalloc2/introduction/">堆利用 - CTF Wiki (ctf-wiki.org)</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>CTF</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>黑客们的软件安全研究</title>
     <link href="/2022/05/02/%E9%BB%91%E5%AE%A2%E4%BB%AC%E7%9A%84%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/"/>
     <url>/2022/05/02/%E9%BB%91%E5%AE%A2%E4%BB%AC%E7%9A%84%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6/</url>
     
-    <content type="html"><![CDATA[<p>对于腾讯的安全实验室进行了搜索，发现其中有很多CVE，这些主要属于art的范畴，比较偏工业和应用。要称为science应该是提出一类方法，例如静态与动态代码分析的优化、fuzz的优化等等。</p><p>尝试再寻找一下，</p>]]></content>
+    <content type="html"><![CDATA[<p>对于腾讯的安全实验室进行了搜索，发现其中有很多CVE，这些主要属于art的范畴，比较偏工业和应用。要称为science应该是提出一类方法，例如静态与动态代码分析的优化、fuzz的优化等等。</p><p>​    因为寻找的方向不是很正确，需要找的是作为黑客转型成为博士进行安全研究的人，而非本科或硕士毕业后进入实验室研究的工作者。</p><p>可以尝试查找shellphish团队的研究结果</p><p>​    查找之后，可以分析研究结果的特点</p>]]></content>
     
     
     <categories>

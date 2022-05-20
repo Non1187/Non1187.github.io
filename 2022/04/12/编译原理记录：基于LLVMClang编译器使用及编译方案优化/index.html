@@ -24,7 +24,7 @@
 <meta property="og:description" content="本学期的编译原理课程有一个关于LLVM&#x2F;Clang环境的搭建和优化的作业，要求在原始编译器的基础上扩展数组类型修饰符，增加越界访问检查功能。这个内容正好对于系统安全来说比较重要(至少大创老师是这么说的)，因此进行一些记录。 在gitlab上建了一个project，地址也贴在这里：Non &#x2F; CompilePrincipleLab-2022-spring · GitLab Lab1 分析由">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-04-12T00:52:46.071Z">
-<meta property="article:modified_time" content="2022-05-01T10:06:51.481Z">
+<meta property="article:modified_time" content="2022-05-15T04:48:01.830Z">
 <meta property="article:author" content="Cheer">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -196,7 +196,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      4k 字
+      4.5k 字
     </span>
   
 
@@ -205,7 +205,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      34 分钟
+      38 分钟
     </span>
   
 
@@ -287,25 +287,68 @@
 <p>​            父类转子类是不安全的，需要是原生的才能转换。因此需要使用dynamic_cast进行转换。</p>
 <p>​    调试时，发生abort等 可以用bt</p>
 <p>​    <em>！！</em>为保证访问者模式的规范，visit函数中返回的node类型尽量是一样的</p>
-<h4 id="Lab2-分析"><a href="#Lab2-分析" class="headerlink" title="Lab2  分析"></a>Lab2  分析</h4><h5 id="实验内容"><a href="#实验内容" class="headerlink" title="实验内容"></a>实验内容</h5><p>LLVM IR介绍，Instruction大部分是3地址码的形式。</p>
-<p>LLVM IR生成</p>
-<p>已经通过ANTLR收集到了前端信息，</p>
-<p>Lab2实验内容</p>
-<p>检查的情况：包括，obc数组的情况，定义时size是2但是实际分量数量是4的情况。</p>
-<p>先给的fib数组分量有限，</p>
-<p>前期要做实验先了解LLVM的IR</p>
-<p>演示，写了一个check的源代码，IR生成，修改arrlen，若越界触发问题</p>
-<p>需要补充完成<code>SafeCIRBuilder.h</code>中<code>visit</code>函数的实现。在函数中，需要进行Visitor内用于表示情况的flag成员变量的赋值，以及用于保存变量和函数的成员变量的赋值。两个变量的概念实际是相同的。</p>
+<h4 id="Lab2-分析"><a href="#Lab2-分析" class="headerlink" title="Lab2  分析"></a>Lab2  分析</h4><h5 id="实验内容"><a href="#实验内容" class="headerlink" title="实验内容"></a>实验内容</h5><p>需要补充完成<code>SafeCIRBuilder.h</code>中<code>visit</code>函数的实现。在函数中，需要进行Visitor内用于表示情况的flag成员变量的赋值，以及用于保存变量和函数的成员变量的赋值。两个变量的概念实际是相同的。</p>
 <h5 id="LLVMContext-Builder-Module"><a href="#LLVMContext-Builder-Module" class="headerlink" title="LLVMContext, Builder, Module"></a>LLVMContext, Builder, Module</h5><p>LLVMContext类，在IRBuilder，Module的声明中都要用到。</p>
 <p>LLVMContext，可以连接不同的Module，并将各个Module中使用的IRBuilder进行统一。</p>
 <p>IRBuilder是在每个模块中声明的，用于进行三地址代码生成的类。执行了一系列Create语句后，builder类中会存储对应的内容，并在执行一定功能时进行输出。</p>
 <p>Module是LLVM程序中的模块。LLVM程序由模块组成，每个输入程序对应一个模块，模块包括函数、全局变量和符号表。多个模块可以被LLVM链接器组合在一起。可以将LLVM中的Module类比为C程序中的源文件。</p>
 <h5 id="Value类"><a href="#Value类" class="headerlink" title="Value类"></a>Value类</h5><p>值Value是程序中可能被用于作为计算值的基类，是其他重要的类譬如Instruction和Function的超类。</p>
-<p>所有的值都有一个类型Type。</p>
-<p>一些值可以有名称，属于特定的模块。设置某个Value的名称会自动更新对应模块的符号表。</p>
-<p>每个值有一个”使用列表” use list，可以追踪哪些值正在使用该值。</p>
-<h5 id="SafeCIRBuilder-cpp编写"><a href="#SafeCIRBuilder-cpp编写" class="headerlink" title="SafeCIRBuilder.cpp编写"></a>SafeCIRBuilder.cpp编写</h5><p>flag变量是SafeCIRBuilder类中相对visit方法的”全局”变量</p>
-<p>BasicBlock变量，实际上相当于表示一个块的标签。</p>
+<h5 id="SafeCIRBuilder-cpp编写"><a href="#SafeCIRBuilder-cpp编写" class="headerlink" title="SafeCIRBuilder.cpp编写"></a>SafeCIRBuilder.cpp编写</h5><p>问题：</p>
+<ul>
+<li>对左值的使用，分别作为左值和右值的含义<ul>
+<li>当作为右值使用时，还需要通过load指令将值取出，然后将值所关联的Value指针存入value_result中</li>
+</ul>
+</li>
+<li>expr返回值，如何通过全局变量传递</li>
+<li>is_const的定义如何确定，如何使用</li>
+<li>accept的实际调用对象</li>
+</ul>
+<p>上述问题基本解决，进行编写</p>
+<p>问题2：</p>
+<ul>
+<li><p>lval_or_rval flag变量在lval: Identifier LeftBracket exp RightBracket的表达式中, 是否需要进行保存</p>
+<p>不需要保存。直接在一开始进行分支即可。</p>
+</li>
+<li><p>unaryop_node中，op为”+”时是否需要创建三地址代码</p>
+</li>
+<li><p>in_global变量是否需要在取表达式的时候进行考虑</p>
+<p>根据”变量定义处理”, 可以统一在lval_node中处理</p>
+</li>
+<li><p>最后的ret void语句是自动生成的</p>
+</li>
+</ul>
+<p>“七妹”博客阅读理解</p>
+<ul>
+<li><p>利用C接口和IRBuilder生成LLVM IR (if和while语句)</p>
+<ul>
+<li><p>编写if语句，创建一个if_then代码块和if_else代码块，然后根据cmp的值跳转，最后创建返回值</p>
+<p>最后是否能通过某条件，判断是否还需要增加新的基本块</p>
+</li>
+</ul>
+</li>
+<li><p>使用LLVM IR调用C的函数和全局变量</p>
+</li>
+<li><p>将C&#x2F;C++中定义的结构体作为LLVM IR中函数的实参</p>
+</li>
+<li><p>操作IR的字符串、全局变量、全局常量及数组</p>
+</li>
+<li><p>使用LLVM提供的C接口和IRBuilder来生成LLVM IR常用方法总结</p>
+</li>
+<li><p>LLVM异常处理</p>
+</li>
+</ul>
+<p>debug</p>
+<ul>
+<li><p>obc_check中的块跳转问题，每个块最后需要有一个跳转语句，否则报segmentation fault  此时即使某块前没有predecessors也可以正常执行</p>
+<p>将块跳转改为条件跳转，报segmentation fault  检查后发现是重复Load的问题，不能对Load得到的Inst进行重复的Load。   另外一个错误为，每个块最后必须有个跳转或返回。</p>
+</li>
+<li><p>全局变量的定义问题，calc.c中，z作为局部数组时结果正确，作为全局数组时错误</p>
+</li>
+</ul>
+<p>测试程序记录：</p>
+<ul>
+<li>complex.c和while.c输出数字较少，while循环的问题</li>
+</ul>
 
             </div>
             <hr>

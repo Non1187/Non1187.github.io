@@ -24,7 +24,7 @@
 <meta property="og:description" content="32位shellcode: 12345678xor    ecx,ecx;mul    ecx;push   ecx;push   0x68732f2f;push   0x6e69622f;mov    ebx,esp;mov    al,0xb;int    0x80;  32位机器的系统调用，调用号在EAX，前面的参数依次在EBX, ECX, EDX 其中，mul ecx;指令的作用为EDX:">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-04-13T02:53:23.701Z">
-<meta property="article:modified_time" content="2022-04-22T14:15:17.706Z">
+<meta property="article:modified_time" content="2022-06-07T12:00:42.766Z">
 <meta property="article:author" content="Cheer">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -196,7 +196,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      433 字
+      650 字
     </span>
   
 
@@ -205,7 +205,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      4 分钟
+      6 分钟
     </span>
   
 
@@ -248,9 +248,10 @@
 <p>64位机器系统调用，调用号在RAX，前面的参数依次在RDI, DSI, RDX, RCX</p>
 <p>假设开始时rax为零了</p>
 <p>且rcx为零不需要保证</p>
+<p>构建时，使用context(os&#x3D;’linux’, arch&#x3D;’amd64’, bits&#x3D;’64’)设置环境，然后用asm(shellcraft.sh())构造shellcode。也可以用asm([汇编代码])生成shellcode。</p>
 <p>使用pwntools可以把其中的AT&amp;T转换成intel风格。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs assembly"><br></code></pre></td></tr></table></figure>
-
+<p>使用gcc选择汇编格式生成汇编代码，使用选项-masm&#x3D;intel。</p>
+<p>使用objdump选择汇编格式，用&#96;objdump -M intel -d &lt;执行档&gt; </p>
 
             </div>
             <hr>

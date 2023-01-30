@@ -193,15 +193,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/05/06/%E6%84%9F%E6%83%B3/" target="_self">
-          研究方向
+        <a href="/2023/01/16/AI%E6%A1%86%E6%9E%B6%E5%AE%89%E5%85%A8%E6%AF%95%E8%AE%BE/" target="_self">
+          AI框架安全毕设
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2022/05/06/%E6%84%9F%E6%83%B3/" target="_self">
+        <a href="/2023/01/16/AI%E6%A1%86%E6%9E%B6%E5%AE%89%E5%85%A8%E6%AF%95%E8%AE%BE/" target="_self">
           
-          5&#x2F;6 CTF 二进制安全竞赛，通过看论文达到的目的  加以实现 5&#x2F;7 或许，如果不去那么serious的话，生活可以简单一些 并不能说读论文就是减慢了练习，适当增强一下下意志力 本质原因：觉得自己还不够强        这应该是属于第一道考验  加油 5&#x2F;10 每每想到编译器 就想起了体系结构 已经完成了期盼了，主要还是要开心一些        想了想薛院士 5&amp;
+          CVE复现问题可以先找便于复现的漏洞处理 先找有CVE编号的漏洞，在NVD里找官方的POC ——没找到，最后还是github的security文件夹里面对部分安全问题有小块的POC 感觉信息检索和分析处理能力也是比较重要的，上层的能力 调查过程思考内容 分析研究对象时最好看下各个框架。如果某个框架分析得比较好还可以考虑向底层进行挖掘。所以可以先从TensorFlow开始。 当时学长也提示了，可以对
         </a>
       </p>
 
@@ -209,8 +209,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-05-06 13:29" pubdate>
-              2022-05-06
+            <time datetime="2023-01-16 23:12" pubdate>
+              2023-01-16
             </time>
           </div>
         
@@ -218,7 +218,7 @@
           <div class="post-meta mr-3">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/%E6%84%9F%E6%83%B3/">感想</a>
+              <a href="/categories/%E6%AF%95%E8%AE%BE/">毕设</a>
             
           </div>
         
@@ -254,6 +254,13 @@
             </time>
           </div>
         
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/CTF/">CTF</a>
+            
+          </div>
         
         
       </div>
@@ -346,15 +353,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/04/13/Pwn%E4%B8%ADshellcode%E7%9A%84%E6%9E%84%E5%BB%BA/" target="_self">
-          Pwn中shellcode的构建
+        <a href="/2022/04/13/Pwn%E4%B8%ADshellcode%E7%9A%84%E6%9E%84%E5%BB%BA%E5%8F%8A%E8%B0%83%E7%94%A8%E8%A7%84%E8%8C%83/" target="_self">
+          Pwn中shellcode的构建及调用规范
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2022/04/13/Pwn%E4%B8%ADshellcode%E7%9A%84%E6%9E%84%E5%BB%BA/" target="_self">
+        <a href="/2022/04/13/Pwn%E4%B8%ADshellcode%E7%9A%84%E6%9E%84%E5%BB%BA%E5%8F%8A%E8%B0%83%E7%94%A8%E8%A7%84%E8%8C%83/" target="_self">
           
-          32位shellcode: 12345678xor    ecx,ecx;mul    ecx;push   ecx;push   0x68732f2f;push   0x6e69622f;mov    ebx,esp;mov    al,0xb;int    0x80;  32位机器的系统调用，调用号在EAX，前面的参数依次在EBX, ECX, EDX 其中，mul ecx;指令的作用为EDX:
+          值得注意的是，通过execve(&#39;&#x2F;bin&#x2F;sh&#39;,0,0)的方式调用shell，只对于zsh之外的shell有作用。 一般的方法为，使用execve(&#39;&#x2F;bin&#x2F;sh&#39;,0,0)调用shell。并且需要注意，该方案只对于zsh之外的shell有作用。(zsh好像破事一直比较多) 32位shellcode: 12345678xor    ecx,ecx;mul
         </a>
       </p>
 
@@ -372,46 +379,6 @@
             <i class="iconfont icon-category"></i>
             
               <a href="/categories/CTF/">CTF</a>
-            
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/04/12/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E8%AE%B0%E5%BD%95%EF%BC%9A%E5%9F%BA%E4%BA%8ELLVMClang%E7%BC%96%E8%AF%91%E5%99%A8%E4%BD%BF%E7%94%A8%E5%8F%8A%E7%BC%96%E8%AF%91%E6%96%B9%E6%A1%88%E4%BC%98%E5%8C%96/" target="_self">
-          编译原理记录：基于LLVM/Clang编译器使用及编译方案优化
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2022/04/12/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E8%AE%B0%E5%BD%95%EF%BC%9A%E5%9F%BA%E4%BA%8ELLVMClang%E7%BC%96%E8%AF%91%E5%99%A8%E4%BD%BF%E7%94%A8%E5%8F%8A%E7%BC%96%E8%AF%91%E6%96%B9%E6%A1%88%E4%BC%98%E5%8C%96/" target="_self">
-          
-          本学期的编译原理课程有一个关于LLVM&#x2F;Clang环境的搭建和优化的作业，要求在原始编译器的基础上扩展数组类型修饰符，增加越界访问检查功能。这个内容正好对于系统安全来说比较重要(至少大创老师是这么说的)，因此进行一些记录。 在gitlab上建了一个project，地址也贴在这里：Non &#x2F; CompilePrincipleLab-2022-spring · GitLab Lab1 分析由
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-04-12 08:52" pubdate>
-              2022-04-12
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E8%AF%BE%E7%A8%8B%E9%9A%8F%E7%AC%94/">课程随笔</a>
             
           </div>
         
